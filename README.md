@@ -19,7 +19,9 @@ a raster of the height of the terrain within the boundary, visualize the terrain
 
 
 ## Data
-The resource in the s3 bucket is in entwine format, EntwinePoint Tile (EPT) is a simple and flexible octree-based storage format for point cloud data. The organization of an EPT dataset contains JSON metadata portions as well as binary point data. The JSON file is core metadata required to interpret the contents of an EPT dataset.
+
+- The USGS 3D Elevation Program (3DEP) provides access to lidar point cloud data from the 3DEP repository. The adoption of cloud storage and computing by 3DEP allows users to work with massive datasets of lidar point cloud data without having to download them to local machines.
+- The resource in the s3 bucket in our case is in entwine format, EntwinePoint Tile (EPT) is a simple and flexible octree-based storage format for point cloud data. The organization of an EPT dataset contains JSON metadata portions as well as binary point data. The JSON file is core metadata required to interpret the contents of an EPT dataset.
 
 
 
