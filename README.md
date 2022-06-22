@@ -27,7 +27,6 @@ The resource in the s3 bucket is in entwine format, EntwinePoint Tile (EPT) is a
 
 ```
 pip install AgriTechLidar
-
 ```
 
 ## Usage
