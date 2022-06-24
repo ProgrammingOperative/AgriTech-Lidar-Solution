@@ -4,6 +4,7 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Polygon
 import json
+from config import Config
 
 
 class FetchLidar:
