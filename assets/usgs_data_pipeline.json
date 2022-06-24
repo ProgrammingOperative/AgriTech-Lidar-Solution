@@ -43,12 +43,6 @@
         "out_srs": ""
       },
       {
-        "type": "writers.las",
-        "inputs": [ "reprojection" ],
-        "tag": "writers_las",
-        "filename": ""
-      },
-      {
         "type": "writers.gdal",
         "inputs": [ "writers_las" ],
         "filename": "",
