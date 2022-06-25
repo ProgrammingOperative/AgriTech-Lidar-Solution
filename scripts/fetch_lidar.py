@@ -1,5 +1,6 @@
 import pdal
 import json
+from bounds import Bounds
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Polygon
@@ -48,7 +49,7 @@ class FetchLidar:
         pl = self.get_pipeline(bounds.get_bound_str(),
                             polygon_str, region, filename)
         pl.execute()
-        dep_data = self._gdf_helper.get_dep(pl.arrays)
+        dep_data = self._gdf_helper.create_gdf(pl.arrays)
         return dep_data
 
 

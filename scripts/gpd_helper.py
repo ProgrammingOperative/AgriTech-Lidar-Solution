@@ -30,5 +30,27 @@ class GpdHelper:
 
         return bound, polygon_str
 
+    def create_gdf(self, array_data: np.ndarray) -> gpd.GeoDataFrame:
+        """ Constructs a Geopandas data frame having an elevation column 
+            and a geometry column representing point cloud data in a given coordinate reference system.
+
+        Args:
+            array_data (np.ndarray): A point cloud data in a numpy format
+
+        Returns:
+            gpd.GeoDataFrame: A geopandas data frame containing geometry and elevation.
+        """
+
+        for i in array_data:
+            geometry_points = [Point(x, y) for x, y in zip(i["X"], i["Y"])]
+            elevations = np.array(i["Z"])
+
+            df = gpd.GeoDataFrame(columns=["elevation", "geometry"])
+            df['elevation'] = elevations
+            df['geometry'] = geometry_points
+            df = df.set_geometry("geometry")
+            df.set_crs(epsg=self.output_epsg, inplace=True)
+        return df
+
 
 
