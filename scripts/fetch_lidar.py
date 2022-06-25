@@ -46,7 +46,7 @@ class FetchLidar:
             gpd.GeoDataFrame: Geopandas data frame containing geometry and elevation
             """
         filename = region + "_" + bounds.get_bound_name()
-        pl = self.get_pipeline(bounds.get_bound_str(),
+        pl = self.make_pipeline(bounds.get_bound_str(),
                             polygon_str, region, filename)
         pl.execute()
         dep_data = self._gdf_helper.create_gdf(pl.arrays)
