@@ -47,15 +47,9 @@ class FetchLidar:
         filename = region + "_" + bounds.get_bound_name()
         pl = self.get_pipeline(bounds.get_bound_str(),
                             polygon_str, region, filename)
-        try:
-            pl.execute()
-            dep_data = self._gdf_helper.get_dep(pl.arrays)
-            self._logger.info(f"successfully read geodata: {filename}")
-            return dep_data
-        except RuntimeError as e:
-            self._logger.exception(f"error reading geodata, error: {e}")
-
-
+        pl.execute()
+        dep_data = self._gdf_helper.get_dep(pl.arrays)
+        return dep_data
 
 
 
