@@ -22,11 +22,14 @@ class FetchLidar:
         pipe['pipeline'][0]['bounds'] = bounds
         pipe['pipeline'][1]['polygon'] = polygon_str
         pipe['pipeline'][6]['out_srs'] = f'EPSG:{self.output_epsg}'
-        pipe['pipeline'][7]['filename'] = Config.ASSETS_PATH + f'{filename}.tif' 
+        pipe['pipeline'][7]['filename'] = Config.DATA_PATH + f'{filename}.tif'
+        pipe['pipeline'][8]['filename'] = Config.DATA_PATH + f'{filename}.tif' 
         return pdal.Pipeline(json.dumps(pipe))
 
 
-    def create_dataframe():
+    #   def get_dep(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
+    #   We only need the polygon, not necesarily the boundaries
+    def fetch_data():
         pass
 
 
