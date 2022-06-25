@@ -14,7 +14,7 @@ class FetchLidar:
 
     def make_pipeline(self, bounds: str, polygon_str: str, region: str, filename: str):
         
-        with open('../assets/usgs_3dep_pipeline', 'r') as json_file:
+        with open('../assets/usgs_3dep_pipeline.json', 'r') as json_file:
             json_object = json.load(json_file)
 
         pipe = json_object
@@ -29,8 +29,31 @@ class FetchLidar:
 
     #   def get_dep(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
     #   We only need the polygon, not necesarily the boundaries
-    def fetch_data():
-        pass
+   
+
+
+    def fetch_data(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
+        """ Executes pdal pipeline and fetches point cloud data from a public repository.
+            Using GDfHelper class creates Geopandas data frame containing geometry and elevation of the point cloud data.
+
+        Args:
+            bounds (Bounds): Geometry object describing the boundary of interest for fetching point cloud data
+            polygon_str (str): Geometry object describing the boundary of the requested location.
+            region (list): Point cloud data location for a specific boundary on the AWS cloud storage EPT resource. 
+
+        Returns:
+            gpd.GeoDataFrame: Geopandas data frame containing geometry and elevation
+            """
+        filename = region + "_" + bounds.get_bound_name()
+        pl = self.get_pipeline(bounds.get_bound_str(),
+                            polygon_str, region, filename)
+        try:
+            pl.execute()
+            dep_data = self._gdf_helper.get_dep(pl.arrays)
+            self._logger.info(f"successfully read geodata: {filename}")
+            return dep_data
+        except RuntimeError as e:
+            self._logger.exception(f"error reading geodata, error: {e}")
 
 
 
