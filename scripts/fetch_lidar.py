@@ -32,7 +32,6 @@ class FetchLidar:
     #   We only need the polygon, not necesarily the boundaries
    
 
-
     def fetch_data(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
         """ Executes pdal pipeline and fetches point cloud data from a public repository.
             Using GDfHelper class creates Geopandas data frame containing geometry and elevation of the point cloud data.
@@ -51,6 +50,10 @@ class FetchLidar:
         pl.execute()
         dep_data = self._gdf_helper.create_gdf(pl.arrays)
         return dep_data
+
+    def get_lidar_data(self):
+        bound, polygon_str = self._gdf_helper.get_bound_from_polygon(polygon)
+        return self.fetch_data(bound, polygon_str)
 
 
 
