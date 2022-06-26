@@ -4,8 +4,6 @@ from vis import Vis
 
 
 
-
-
 class AgriTechLidar:
     def __init__(self, epsg = 26915):
         self.input_epsg = 3857
