@@ -51,9 +51,9 @@ class FetchLidar:
         dep_data = self._gdf_helper.create_gdf(pl.arrays)
         return dep_data
 
-    def get_lidar_data(self):
+    def get_lidar_data(self, polygon, regions):
         bound, polygon_str = self._gdf_helper.get_bound_from_polygon(polygon)
-        return self.fetch_data(bound, polygon_str)
+        return self.fetch_data(bound, polygon_str, regions)
 
 
 
