@@ -46,12 +46,12 @@
         "type": "writers.las",
         "inputs": [ "classify" ],
         "tag": "writers_las",
-        "filename": f"{filename}.laz"
+        "filename": ""
       },
       {
         "type": "writers.gdal",
         "inputs": [ "writers_las" ],
-        "filename": f"{filename}.tif",
+        "filename": "",
         "gdalopts": "tiled=yes, compress=deflate",
         "nodata": -9999,
         "output_type": "idw",

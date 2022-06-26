@@ -26,9 +26,9 @@ class FetchLidar:
         pipe['pipeline'][0]['filename'] = Config.USGS_3DEP_PUBLIC_DATA_PATH / f"{region}/etp.json"
         pipe['pipeline'][0]['bounds'] = bounds
         pipe['pipeline'][1]['polygon'] = polygon_str
-        pipe['pipeline'][6]['out_srs'] = f'EPSG:{self.output_epsg}'
-        pipe['pipeline'][7]['filename'] = Config.DATA_PATH + f'{filename}.tif'
-        pipe['pipeline'][8]['filename'] = Config.DATA_PATH + f'{filename}.tif' 
+        pipe['pipeline'][5]['out_srs'] = f'EPSG:{self.output_epsg}'
+        pipe['pipeline'][8]['filename'] = Config.DATA_PATH + f'{filename}.laz'
+        pipe['pipeline'][9]['filename'] = Config.DATA_PATH + f'{filename}.tif' 
         return pdal.Pipeline(json.dumps(pipe))
 
 
@@ -37,7 +37,15 @@ class FetchLidar:
    
 
     def fetch_data(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
-        """ Executes pdal pipeline and fetches point cloud data from a public repository.
+        filename = region + "_" + bounds.get_bound_name()
+        pl = self.make_pipeline(bounds.get_bound_str(),
+                            polygon_str, region, filename)
+        pl.execute()
+        gpd_data = self._gdf_helper.create_gdf(pl.arrays)
+        return gpd_data
+
+
+         """ Executes pdal pipeline and fetches point cloud data from a public repository.
             Using GDfHelper class creates Geopandas data frame containing geometry and elevation of the point cloud data.
 
         Args:
@@ -48,12 +56,6 @@ class FetchLidar:
         Returns:
             gpd.GeoDataFrame: Geopandas data frame containing geometry and elevation
             """
-        filename = region + "_" + bounds.get_bound_name()
-        pl = self.make_pipeline(bounds.get_bound_str(),
-                            polygon_str, region, filename)
-        pl.execute()
-        dep_data = self._gdf_helper.create_gdf(pl.arrays)
-        return dep_data
 
     def get_lidar_data(self, polygon, regions):
         bound, polygon_str = self._gdf_helper.get_bound_from_polygon(polygon)
