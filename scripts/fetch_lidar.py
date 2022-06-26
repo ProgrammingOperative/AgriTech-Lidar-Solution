@@ -8,8 +8,11 @@ import json
 from config import Config
 
 class FetchLidar:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, epsg: int = 26915) -> None:
+        self._input_epsg = 3857
+        self.output_epsg = epsg
+        self._gdf_helper = GPDHelper(self._input_epsg, self.output_epsg)
+
 
 
 
