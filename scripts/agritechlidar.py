@@ -13,8 +13,8 @@ class AgriTechLidar:
         self.fetch_data = FetchLidar(self.output_epsg)
 
 
-    def fetch_lidar(self, polygon: Polygon):
-        return self.get_lidar_data(polygon)
+    def fetch_lidar(self, polygon: Polygon, regions=[]):
+        return self.fetch_data.get_lidar_data(polygon, regions)
 
 
     def render_vis(self, df: gpd.GeoDataFrame) -> Vis:
