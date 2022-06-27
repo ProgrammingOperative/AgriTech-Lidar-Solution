@@ -40,7 +40,7 @@ class Visualize():
         z = self.df.elevation
         return np.vstack((x, y, z)).transpose()
 
-    def plot_2d_heatmap(df,column,title):
+    def plot_heatmap(df,column,title):
         """
         plot a 2d heat map of the terrain
         args:
@@ -57,4 +57,22 @@ class Visualize():
         plt.title(title)
         plt.xlabel('long')
         plt.ylabel('lat')
+        plt.show()
+
+    def plot_3d(self, s: float = 0.01) -> None:
+        """ Plots a 3D terrain scatter plot for the cloud data points of geopandas data frame using matplotlib
+        """
+        points = self.get_points()
+        fig, ax = plt.subplots(1, 1, figsize=(12, 10))
+        ax = plt.axes(projection='3d')
+        ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=s)
+        ax.set_xlabel('Longitude')
+        ax.set_ylabel('Latitude')
+        plt.savefig('../assets/img/plot3d.png', dpi=120)
+        plt.axis('off')
+        plt.close()
+        fig, ax = plt.subplots(1, 1, figsize=(12, 10))
+        img = mpimg.imread('../assets/img/plot3d.png')
+        imgplot = plt.imshow(img)
+        plt.axis('off')
         plt.show()
