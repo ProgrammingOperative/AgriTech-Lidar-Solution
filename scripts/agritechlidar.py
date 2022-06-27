@@ -16,4 +16,4 @@ class AgriTechLidar:
 
 
     def render_vis(self, df: gpd.GeoDataFrame) -> Vis:
-        return vis(df)
+        return Vis(df)
