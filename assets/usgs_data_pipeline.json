@@ -16,7 +16,7 @@
         "type": "filters.range",
         "inputs": [ "crop" ],
         "tag": "no_noise",
-        "limits": "Classification![2:2]"
+        "limits": "Classification![7:7]"
       },
       {
         "type": "filters.assign",
@@ -25,9 +25,16 @@
         "assignment": "Classification[:]=0"
       },
       {
-        "type": "filters.smrf",
+        "type": "filters.reprojection",
         "inputs": [ "wipe_classes" ],
-        "tag": "groundify"
+        "tag": "reprojection",
+        "in_srs": "EPSG:3857",
+        "out_srs": ""
+      },
+      {
+        "inputs": [ "reprojection" ],
+        "tag": "groundify",
+        "type": "filters.smrf"
       },
       {
         "type": "filters.range",
@@ -36,11 +43,10 @@
         "limits": "Classification[2:2]"
       },
       {
-        "type": "filters.reprojection",
+        "type": "writers.las",
         "inputs": [ "classify" ],
-        "tag": "reprojection",
-        "in_srs": "EPSG:3857",
-        "out_srs": ""
+        "tag": "writers_las",
+        "filename": ""
       },
       {
         "type": "writers.gdal",
