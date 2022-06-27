@@ -1,7 +1,6 @@
 import pdal
 import json
-from bounds import Bounds
-import pandas as pd
+from bounds import GeoBounds
 import geopandas as gpd
 from shapely.geometry import Polygon
 import json
@@ -10,11 +9,9 @@ from config import Config
 
 class FetchLidar:
     def __init__(self, epsg: int = 26915) -> None:
-        self._input_epsg = 3857
         self.output_epsg = epsg
-        self._gdf_helper = GPDHelper(self._input_epsg, self.output_epsg)
-
-
+        self._input_epsg = 3857
+        self._gdf_helper = GpdHelper(self._input_epsg, self.output_epsg)
 
 
     def make_pipeline(self, bounds: str, polygon_str: str, region: str, filename: str):
@@ -31,12 +28,9 @@ class FetchLidar:
         pipe['pipeline'][9]['filename'] = Config.DATA_PATH + f'{filename}.tif' 
         return pdal.Pipeline(json.dumps(pipe))
 
-
-    #   def get_dep(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
     #   We only need the polygon, not necesarily the boundaries
    
-
-    def fetch_data(self, bounds: Bounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
+    def fetch_data(self, bounds: GeoBounds, polygon_str: str, region: list) -> gpd.GeoDataFrame:
         filename = region + "_" + bounds.get_bound_name()
         pl = self.make_pipeline(bounds.get_bound_str(),
                             polygon_str, region, filename)
@@ -44,18 +38,6 @@ class FetchLidar:
         gpd_data = self._gdf_helper.create_gdf(pl.arrays)
         return gpd_data
 
-
-         """ Executes pdal pipeline and fetches point cloud data from a public repository.
-            Using GDfHelper class creates Geopandas data frame containing geometry and elevation of the point cloud data.
-
-        Args:
-            bounds (Bounds): Geometry object describing the boundary of interest for fetching point cloud data
-            polygon_str (str): Geometry object describing the boundary of the requested location.
-            region (list): Point cloud data location for a specific boundary on the AWS cloud storage EPT resource. 
-
-        Returns:
-            gpd.GeoDataFrame: Geopandas data frame containing geometry and elevation
-            """
 
     def get_lidar_data(self, polygon, regions):
         bound, polygon_str = self._gdf_helper.get_bound_from_polygon(polygon)
