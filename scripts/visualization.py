@@ -31,3 +31,11 @@ class Visualize():
         show_hist(src, bins=50, histtype='stepfilled',
                 lw=0.0, stacked=False, alpha=0.3, ax=axhist)
         plt.show()
+
+    def get_points(self):
+        """ Generates a NumPy array from point clouds data.
+        """
+        x = self.df.geometry.x
+        y = self.df.geometry.y
+        z = self.df.elevation
+        return np.vstack((x, y, z)).transpose()
