@@ -36,11 +36,11 @@ class Visualize():
         return np.vstack((x, y, z)).transpose()
 
 
-    def plot_heatmap(df,column,title):
+    def plot_heatmap(self,title):
         fig, ax = plt.subplots(1, 1, figsize=(12, 10))
         fig.patch.set_alpha(0)
         plt.grid('on', zorder=0)
-        df.plot(column=column, ax=ax, legend=True, cmap="terrain")
+        self.df.plot(column="elevation", ax=ax, legend=True, cmap="terrain")
         plt.title(title)
         plt.xlabel('long')
         plt.ylabel('lat')
@@ -53,11 +53,11 @@ class Visualize():
         ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=s)
         ax.set_xlabel('Longitude')
         ax.set_ylabel('Latitude')
-        plt.savefig(f'../assets/img/heatmap.png', dpi=120)
+        plt.savefig(f'../assets/images/heatmap.png', dpi=120)
         plt.axis('off')
         plt.close()
         fig, ax = plt.subplots(1, 1, figsize=(12, 10))
-        img = mpimg.imread('../assets/img/heatmap.png')
+        img = mpimg.imread('../assets/images/heatmap.png')
         imgplot = plt.imshow(img)
         plt.axis('off')
         plt.show()
