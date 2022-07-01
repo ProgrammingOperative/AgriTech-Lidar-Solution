@@ -1,6 +1,6 @@
 import numpy as np
 import geopandas as gpd
-from bounds import GeoBounds
+from bounds import Bounds
 from shapely.geometry import Point, Polygon
 
 
@@ -17,7 +17,7 @@ class GpdHelper:
         polygon_df.set_crs(epsg=self.output_epsg, inplace=True)
         polygon_df['geometry'] = polygon_df['geometry'].to_crs(epsg=self.input_epsg)
         xmin, ymin, xmax, ymax = polygon_df['geometry'][0].bounds
-        bound = GeoBounds(xmin, xmax, ymin, ymax)
+        bound = Bounds(xmin, xmax, ymin, ymax)
         x_cord, y_cord = polygon_df['geometry'][0].exterior.coords.xy
         polygon_str = self.get_polygon_str(x_cord, y_cord)
 
@@ -31,6 +31,15 @@ class GpdHelper:
         Returns:
             tuple: A tuple of GeoBounds object and a string of a given polygon in a form accepted by the pdal pipeline.
         """
+
+    def get_polygon_str(self, x_cord, y_cord) -> str:
+        polygon_str = 'POLYGON(('
+        for x, y in zip(list(x_cord), list(y_cord)):
+            polygon_str += f'{x} {y}, '
+        polygon_str = polygon_str[:-2]
+        polygon_str += '))'
+        return polygon_str
+
 
     def create_gdf(self, array_data: np.ndarray) -> gpd.GeoDataFrame:
         """ Constructs a Geopandas data frame having an elevation column 

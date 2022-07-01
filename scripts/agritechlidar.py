@@ -12,7 +12,7 @@ class AgriTechLidar:
 
 
     def fetch_lidar(self, polygon: Polygon, regions=[]):
-        return self.fetch_data.get_lidar_data(polygon, regions)
+        return self._fetch_data.get_lidar_data(polygon, regions)
 
 
     def render_vis(self, df) -> Visualize:
