@@ -6,20 +6,13 @@ from shapely.geometry import Point, Polygon
 
 
 class GpdHelper:
-    def __init__(self) -> None:
+    def __init__(self, input_epsg:int ,output_epsg:int) -> None:
         self.input_epsg = input_epsg
         self.output_epsg = output_epsg
     
 
     def get_bound_from_polygon(self, polygon: Polygon) -> tuple:
-        """ Computes bounds value for the given polygon
-
-        Args:
-            polygon (Polygon): Shapely geometry object describing the polygon.
-
-        Returns:
-            tuple: A tuple of Bounds object and a string of a given polygon in a form accepted by the pdal pipeline.
-        """
+        
         polygon_df = gpd.GeoDataFrame([polygon], columns=['geometry'])
         polygon_df.set_crs(epsg=self.output_epsg, inplace=True)
         polygon_df['geometry'] = polygon_df['geometry'].to_crs(epsg=self.input_epsg)
@@ -29,6 +22,24 @@ class GpdHelper:
         polygon_str = self.get_polygon_str(x_cord, y_cord)
 
         return bound, polygon_str
+
+        """ Computes bounds value for the given polygon
+
+        Args:
+            polygon (Polygon): Shapely geometry object describing the polygon.
+
+        Returns:
+            tuple: A tuple of GeoBounds object and a string of a given polygon in a form accepted by the pdal pipeline.
+        """
+
+    def get_polygon_str(self, x_cord, y_cord) -> str:
+        polygon_str = 'POLYGON(('
+        for x, y in zip(list(x_cord), list(y_cord)):
+            polygon_str += f'{x} {y}, '
+        polygon_str = polygon_str[:-2]
+        polygon_str += '))'
+        return polygon_str
+
 
     def create_gdf(self, array_data: np.ndarray) -> gpd.GeoDataFrame:
         """ Constructs a Geopandas data frame having an elevation column 
